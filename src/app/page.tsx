@@ -1,13 +1,20 @@
 "use client";
 import { useState } from "react";
+"use client";
+import { useState } from "react";
+
+interface Question {
+  text: string;
+  answer: string | null;
+}
 
 export default function DvacetJednaOtazek() {
-  const [questions, setQuestions] = useState([
-    { text: "Ahoj! Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky. Začínám: Je tato celebrita naživu?", answer: null },
+  const [questions, setQuestions] = useState<Question[]>([
+    { text: "Ahoj! Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky. Začínám: Je tota celebrita naživu?", answer: null },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState<string | null>(null);
 
   async function sendAnswer(answer: string) {
     setIsLoading(true);
