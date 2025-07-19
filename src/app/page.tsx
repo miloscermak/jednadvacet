@@ -9,7 +9,7 @@ export default function DvacetJednaOtazek() {
   const [gameOver, setGameOver] = useState(false);
   const [summary, setSummary] = useState(null);
 
-  async function sendAnswer(answer) {
+  async function sendAnswer(answer: string) {
     setIsLoading(true);
     const updatedQuestions = [...questions];
     updatedQuestions[updatedQuestions.length - 1].answer = answer;
