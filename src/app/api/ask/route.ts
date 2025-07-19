@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
+interface Question {
+  text: string;
+  answer: string | null;
+}
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 const BASE_PROMPT = `
@@ -19,7 +23,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const history = body.history
     .map(
-      (q: any, i: number) =>
+      (q: Question, i: number) =>
         `${i + 1}. ${q.text}${q.answer ? ` - ${q.answer}` : ""}`
     )
     .join("\n");
