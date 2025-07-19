@@ -8,7 +8,7 @@ interface Question {
 
 export default function DvacetJednaOtazek() {
   const [questions, setQuestions] = useState<Question[]>([
-    { text: "Ahoj! Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky. Začínám: Je tota celebrita naživu?", answer: null },
+    { text: "Ahoj! Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky. Začínám první otázkou: Je tato celebrita naživu?", answer: null },
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -72,7 +72,7 @@ export default function DvacetJednaOtazek() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-blue-100 flex flex-col items-center py-8 px-2">
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 mt-6">
-        <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-3">21 otázek: Uhodni celebritu!</h1>
+        <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-3">20 otázek: Uhodni celebritu!</h1>
         <History />
         {!gameOver && (
           <div className="text-center text-lg font-semibold mt-4">
