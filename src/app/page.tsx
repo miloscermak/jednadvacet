@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-"use client";
-import { useState } from "react";
 
 interface Question {
   text: string;
