@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   const history = body.history
     .map(
-      (q, i) =>
+      (q: any, i: number) =>
         `${i + 1}. ${q.text}${q.answer ? ` - ${q.answer}` : ""}`
     )
     .join("\n");
