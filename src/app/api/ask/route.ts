@@ -71,6 +71,9 @@ export async function POST(req: NextRequest) {
   });
   const data = await openaiRes.json();
   const output = data.choices?.[0]?.message?.content || "";
+  
+  console.log("OpenAI Response:", data);
+  console.log("Extracted output:", output);
 
   if (
     output.toLowerCase().includes("myslím si, že jsi myslel") ||
@@ -93,9 +96,11 @@ export async function POST(req: NextRequest) {
       summary: output,
     });
   } else {
+    // Odstranit číslování z otázky (např. "1. Jsi muž?" -> "Jsi muž?")
+    const cleanText = output.replace(/^\d+\.\s*/, '').trim();
     return NextResponse.json({
       type: "question",
-      text: output,
+      text: cleanText,
     });
   }
 }

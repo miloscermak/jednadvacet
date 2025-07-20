@@ -25,6 +25,7 @@ export default function DvacetJednaOtazek() {
     const data = await res.json();
 
     if (data.type === "question") {
+      console.log("Received question:", data.text);
       setQuestions([{ text: data.text, answer: null }]);
     }
     setIsLoading(false);
@@ -44,6 +45,7 @@ export default function DvacetJednaOtazek() {
     const data = await res.json();
 
     if (data.type === "question") {
+      console.log("Received next question:", data.text);
       setQuestions([...updatedQuestions, { text: data.text, answer: null }]);
     } else if (data.type === "guess" || data.type === "end") {
       setGameOver(true);
@@ -104,7 +106,7 @@ export default function DvacetJednaOtazek() {
               Otázka {questions.length}:
             </div>
             <div className="text-center text-xl font-bold text-blue-800 mb-4">
-              {questions[questions.length - 1].text}
+              {questions[questions.length - 1]?.text || "Otázka se načítá..."}
             </div>
             <div className="text-center text-lg font-semibold text-blue-700">
               Jak odpovíš?
