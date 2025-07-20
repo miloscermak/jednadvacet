@@ -38,6 +38,13 @@ Historie otázek a odpovědí:
 `;
 
 export async function POST(req: NextRequest) {
+  if (!process.env.OPENAI_API_KEY) {
+    return NextResponse.json({
+      type: "error",
+      text: "Není nastaven API klíč pro OpenAI. Přidejte proměnnou OPENAI_API_KEY do prostředí.",
+    });
+  }
+  
   const body = await req.json();
   const history = body.history
     .map(
@@ -75,12 +82,11 @@ export async function POST(req: NextRequest) {
   console.log("OpenAI Response:", data);
   console.log("Extracted output:", output);
 
-  if (
-    output.toLowerCase().includes("myslím si, že jsi myslel") ||
-    output.toLowerCase().includes("je to správně") ||
-    output.toLowerCase().includes("pogratuluj si") ||
-    output.toLowerCase().includes("konec hry")
-  ) {
+  const guessKeywords = ["myslím si", "tipuji", "je to", "uhodl", "správně", "pogratuluj", "konec hry"];
+  const lower = output.toLowerCase();
+  const isGuess = guessKeywords.some(k => lower.includes(k));
+  
+  if (isGuess) {
     return NextResponse.json({
       type: "guess",
       text: output,

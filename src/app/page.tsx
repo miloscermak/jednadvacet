@@ -100,13 +100,13 @@ export default function DvacetJednaOtazek() {
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 mt-6">
         <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-3">20 otázek: Uhodni celebritu!</h1>
         <History />
-        {!gameOver && !isLoading && gameStarted && questions.length > 0 && questions[questions.length - 1].answer == null && (
+        {!gameOver && !isLoading && gameStarted && questions.length > 0 && questions[questions.length - 1].answer == null && questions[questions.length - 1].text && (
           <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-200">
             <div className="text-center text-lg font-semibold text-blue-900 mb-2">
               Otázka {questions.length}:
             </div>
             <div className="text-center text-xl font-bold text-blue-800 mb-4">
-              {questions[questions.length - 1]?.text || "Otázka se načítá..."}
+              {questions[questions.length - 1]?.text}
             </div>
             <div className="text-center text-lg font-semibold text-blue-700">
               Jak odpovíš?
