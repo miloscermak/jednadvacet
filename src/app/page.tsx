@@ -77,17 +77,16 @@ export default function DvacetJednaOtazek() {
   }
 
   function History() {
+    const answeredQuestions = questions.filter(q => q.answer !== null);
     return (
       <div className="my-6">
-        {questions.map((q, i) => (
+        {answeredQuestions.map((q, i) => (
           <div key={i} className="mb-2 flex items-center">
             <span className="font-semibold text-blue-800 mr-2">{i + 1}.</span>
             <span className="mr-2">{q.text}</span>
-            {q.answer && (
-              <span className="ml-4 rounded-full px-3 py-1 bg-blue-50 text-blue-900 border border-blue-200 text-sm">
-                {q.answer}
-              </span>
-            )}
+            <span className="ml-4 rounded-full px-3 py-1 bg-blue-50 text-blue-900 border border-blue-200 text-sm">
+              {q.answer}
+            </span>
           </div>
         ))}
       </div>
@@ -100,8 +99,16 @@ export default function DvacetJednaOtazek() {
         <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-3">20 otázek: Uhodni celebritu!</h1>
         <History />
         {!gameOver && !isLoading && gameStarted && questions.length > 0 && questions[questions.length - 1].answer == null && (
-          <div className="text-center text-lg font-semibold mt-4">
-            Jak odpovíš?
+          <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="text-center text-lg font-semibold text-blue-900 mb-2">
+              Otázka {questions.length}:
+            </div>
+            <div className="text-center text-xl font-bold text-blue-800 mb-4">
+              {questions[questions.length - 1].text}
+            </div>
+            <div className="text-center text-lg font-semibold text-blue-700">
+              Jak odpovíš?
+            </div>
           </div>
         )}
         {!gameStarted && (
