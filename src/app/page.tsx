@@ -7,12 +7,28 @@ interface Question {
 }
 
 export default function DvacetJednaOtazek() {
-  const [questions, setQuestions] = useState<Question[]>([
-    { text: "Ahoj! Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky. Začínám první otázkou: Je tato celebrita naživu?", answer: null },
-  ]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
+  const [gameStarted, setGameStarted] = useState(false);
+
+  async function startGame() {
+    setIsLoading(true);
+    setGameStarted(true);
+    
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ history: [] }),
+    });
+    const data = await res.json();
+
+    if (data.type === "question") {
+      setQuestions([{ text: data.text, answer: null }]);
+    }
+    setIsLoading(false);
+  }
 
   async function sendAnswer(answer: string) {
     setIsLoading(true);
@@ -42,6 +58,15 @@ export default function DvacetJednaOtazek() {
       return (
         <div className="mt-4 text-lg text-gray-500">Přemýšlím…</div>
       );
+    if (!gameStarted) {
+      return (
+        <div className="text-center mt-6">
+          <button onClick={startGame} className="px-8 py-3 rounded-2xl shadow bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition-all">
+            Začít hru
+          </button>
+        </div>
+      );
+    }
     return (
       <div className="flex gap-4 mt-6 justify-center">
         <button onClick={() => sendAnswer("ANO")} className="px-6 py-2 rounded-2xl shadow bg-green-100 hover:bg-green-200 text-green-800 font-bold text-lg transition-all">ANO</button>
@@ -74,11 +99,14 @@ export default function DvacetJednaOtazek() {
       <div className="w-full max-w-xl bg-white rounded-2xl shadow-xl p-8 mt-6">
         <h1 className="text-3xl font-extrabold text-center text-blue-900 mb-3">20 otázek: Uhodni celebritu!</h1>
         <History />
-        {!gameOver && (
+        {!gameOver && !isLoading && gameStarted && questions.length > 0 && questions[questions.length - 1].answer == null && (
           <div className="text-center text-lg font-semibold mt-4">
-            {questions[questions.length - 1].answer == null
-              ? "Jak odpovíš?"
-              : null}
+            Jak odpovíš?
+          </div>
+        )}
+        {!gameStarted && (
+          <div className="text-center text-lg mb-4">
+            Mysli si nějakou všeobecně známou celebritu a odpovídej na mé otázky!
           </div>
         )}
         <AnswerButtons />
@@ -87,7 +115,12 @@ export default function DvacetJednaOtazek() {
             <div className="font-bold mb-2">Konec hry</div>
             <div>{summary}</div>
             <button className="mt-6 px-4 py-2 rounded-xl bg-blue-700 text-white font-bold shadow hover:bg-blue-800"
-              onClick={() => window.location.reload()}>Zkusit znovu</button>
+              onClick={() => {
+                setQuestions([]);
+                setGameStarted(false);
+                setGameOver(false);
+                setSummary(null);
+              }}>Zkusit znovu</button>
           </div>
         )}
         <div className="mt-8 text-center text-sm text-gray-500">Vytvořeno s pomocí AI pro inspiraci v AI hrách.</div>

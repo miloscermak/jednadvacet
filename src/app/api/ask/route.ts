@@ -45,10 +45,15 @@ export async function POST(req: NextRequest) {
         `${i + 1}. ${q.text}${q.answer ? ` - ${q.answer}` : ""}`
     )
     .join("\n");
+  
+  const systemContent = history.length > 0 
+    ? BASE_PROMPT + "\n" + history + "\nDalší krok:"
+    : BASE_PROMPT + "\nZačni hru první otázkou:";
+    
   const messages = [
     {
       role: "system",
-      content: BASE_PROMPT + "\n" + history + "\nDalší krok:",
+      content: systemContent,
     },
   ];
   const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
